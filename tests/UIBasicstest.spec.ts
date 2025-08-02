@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.only ('Browser Context Playwright Test', async ({browser})=> {
+test ('Browser Context Playwright Test', async ({browser})=> {
     // ENFOQUE 1: Creación manual del contexto del navegador
     // Ventajas:
     // - Control total sobre el contexto (cookies, localStorage, sessionStorage)

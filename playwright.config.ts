@@ -13,7 +13,7 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const config = ({
   testDir: './tests',
-  timeout: 40 * 1000, // Aqui se puede editar el timeout para todo el proyecto
+  timeout: 10 * 1000, // Aqui se puede editar el timeout para todo el proyecto
   expect: {
     timeout: 5 * 1000, // Aqui se puede editar el timeout para las ascersiones
   },
