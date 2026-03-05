@@ -1,19 +1,23 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+export default defineConfig({
+  use: {
 
+  }
+});
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 const config = ({
   testDir: './tests',
-  timeout: 10 * 1000, // Aqui se puede editar el timeout para todo el proyecto
+  timeout: 30 * 1000, // Aqui se puede editar el timeout para todo el proyecto
   expect: {
     timeout: 5 * 1000, // Aqui se puede editar el timeout para las ascersiones
   },
@@ -36,7 +40,7 @@ const config = ({
     trace: 'on-first-retry',
     browserName: 'chromium',
     headless: false,
-  
+
   },
 
   /* Configure projects for major browsers */

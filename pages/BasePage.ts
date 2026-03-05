@@ -12,12 +12,12 @@ export class BasePage {
   }
 
   async click(locator: Locator): Promise<void> {
-    await locator.waitFor({ state: "visible" });
+    // await locator.waitFor({ state: "visible" });
     await locator.click();
   }
 
   async fillInput(locator: Locator, value: string): Promise<void> {
-    await locator.waitFor({ state: "visible" });
+    // await locator.waitFor({ state: "visible" });
     await locator.fill(value);
   }
 
@@ -29,6 +29,10 @@ export class BasePage {
     await expect(locator).toBeVisible();
   }
 
+  async waitForElementToBeVisible(locator: Locator, timeout: number){
+    await expect(locator).toBeVisible({timeout})
+  }
+
   async getTextContent(locator: Locator){
     return await locator.textContent()
   }
@@ -38,27 +42,31 @@ export class BasePage {
     return await locator.allTextContents()
   }
 
-  async elementHasTheText (locator: Locator, text: string){
-    await expect(locator).toHaveText(text)
+  async elementHasTheText (locator: Locator ,text: string, auxiliarText?: string){
+    await expect(locator,auxiliarText).toHaveText(text)
   }
 
   async selectFirstElement (locator: Locator){
     await locator.first().textContent()
   }
 
-  async SelectElementFromDropDown (element: string, waitForElements: number = 0){
+  async selectElementByTextFromDropDown (dropdownLocator: Locator, elementText: string, waitForElements: number = 0){
     if ( waitForElements > 0 ){
-      await this.page.waitForTimeout(waitForElements)
+      await this.page.waitForTimeout(waitForElements) // Visible, editable
     }
-    const elements = await this.page.$$("//div[@role='listbox']/div")
+    const elements = await dropdownLocator.elementHandles();
     
     for ( let elementInList of elements){
-      const employeeName = await elementInList.textContent()
-      console.log(employeeName)
-      if (employeeName?.includes(element)){
+      const textContent = await elementInList.textContent()
+    
+      console.log(textContent)
+      if (textContent?.includes(elementText)) {
         await elementInList.click()
         break
       }
     }
   }
+
+
+
 }
