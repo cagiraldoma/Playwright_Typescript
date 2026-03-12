@@ -1,4 +1,4 @@
-import { test, Page, Locator } from "@playwright/test";
+import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
 import { getDateDaysFromToday } from "../utils/dateUtils";
 
@@ -8,6 +8,7 @@ export class DashboardPage extends BasePage {
   readonly employeeNameInput: Locator;
   readonly employeeList: Locator;
   readonly assignLeaveButton: Locator;
+  readonly openLeaveTpyeList: Locator;
   readonly leaveTypeInput: Locator;
   readonly leaveTypeList: Locator;
   readonly fromDateInput: Locator;
@@ -25,45 +26,34 @@ export class DashboardPage extends BasePage {
         'h6[class="oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module"]'
       );
     this.employeeNameInput = page.locator('div[class="oxd-autocomplete-text-input oxd-autocomplete-text-input--active"]>input')
-    this.employeeList = page.locator('//div[@role="listbox"]/div')
+    this.employeeList = page.locator('//div[@role="listbox"]/div/span')
     this.assignLeaveButton = page.locator('button[title="Assign Leave"]')
+    this.openLeaveTpyeList = page.locator('.oxd-select-wrapper')
     this.leaveTypeInput = page.locator('//div[@class="oxd-input-group oxd-input-field-bottom-space"]//div[@class="oxd-select-wrapper"]')
-    this.leaveTypeList = page.locator('//div[@class="oxd-select-wrapper"]//div[@role="listbox"]/div')
+    this.leaveTypeList = page.locator('.oxd-select-option')
     this.fromDateInput = page.locator('//div[@class="oxd-date-input"]/input').first()
     this.toDateInput = page.locator('//div[@class="oxd-date-input"]/input').last();
     this.partialDaysInput = page.locator ('//div[@class="oxd-select-wrapper"]/div[@role="listbox"]/div')
-    this.durationButton = page.locator ('//div[@class="oxd-select-text oxd-select-text--active"]').last()
+    this.durationButton = page.locator ('(//div[@class="oxd-select-text oxd-select-text--active"])[2]')
     this.partialDaysButton = page.locator('//div[@class="oxd-select-text oxd-select-text--active"]//div[contains(text(),"-- Select --")]')
-    this.durationList = page.locator ('//div[@class="oxd-select-dropdown --positon-bottom"]/div')
+    this.durationList = page.locator ('//div[@class="oxd-select-dropdown --positon-bottom"]/div/span')
     this.commentsTextArea = page.locator ('//div/textarea[@class="oxd-textarea oxd-textarea--active oxd-textarea--resize-vertical"]')
 
-    ////div[@class="oxd-select-dropdown --positon-bottom"]
+
 
 
   }
 
-  async assignLeave (employeeName: string, leaveType: string, durationType: string, partialDaysType?: string  ){
+  async assignLeave (employeeName: string, leaveType: string, durationType: string, fromDateAfterToday: number, toDateAfterToday: number, partialDaysType?: string  ){
     await this.fillInput(this.employeeNameInput, employeeName)
-    await this.selectElementByTextFromDropDown(this.employeeList,employeeName, 2000)
+    await this.selectElementByTextFromDropDown(this.employeeList,employeeName)
     await this.leaveTypeInput.click()
-    await this.selectElementByTextFromDropDown(this.leaveTypeList, leaveType );
-    await this.fillInput(this.fromDateInput, getDateDaysFromToday(5))
-    // await this.toDateInput.clear();
-    // await this.fillInput(this.toDateInput, getDateDaysFromToday(20))
-
-    // await this.partialDaysButton.click()
-    // await this.selectElementByTextFromDropDown(this.partialDaysInput,partialDaysType)
-
+    await this.selectElementByTextFromDropDown(this.leaveTypeList, leaveType)
+    await this.fillInput(this.fromDateInput, getDateDaysFromToday(fromDateAfterToday))
+    await this.toDateInput.clear();
+    await this.fillInput(this.toDateInput, getDateDaysFromToday(toDateAfterToday))
     await this.click(this.durationButton)
     await this.selectElementByTextFromDropDown(this.durationList, durationType)
-
     await this.click(this.commentsTextArea)
-
-    // await this.click(this.partialDaysButton)
-    // await this.selectElementByTextFromDropDown(this.partialDaysInput,partialDaysType)
-
-// Dates: Cantidad de dias, dia inicial, dia final
-    
-
   }
 }

@@ -43,6 +43,10 @@ const config = ({
 
   },
 
+  // launchOptions: {
+  //   slowMo: 500
+  // },
+
   /* Configure projects for major browsers */
   projects: [
     {
