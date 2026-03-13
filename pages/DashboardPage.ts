@@ -16,6 +16,6 @@ export class DashboardPage extends BasePage {
     this.dashboardHeader = page.getByRole("heading", { name: "Dashboard" });
     this.assignLeaveButton = page.locator('button[title="Assign Leave"]');
 
-    this.adminNavButton = page.getByText('Admin')
+    this.adminNavButton = page.getByRole('link', { name: 'Admin' });
   }
 }
