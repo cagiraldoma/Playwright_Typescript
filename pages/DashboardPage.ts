@@ -13,9 +13,7 @@ export class DashboardPage extends BasePage {
     this.adminTab = page.locator(
       'a[href="/web/index.php/admin/viewAdminModule"]',
     );
-    this.dashboardHeader = page.locator(
-      'h6[class="oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module"]',
-    );
+    this.dashboardHeader = page.getByRole("heading", { name: "Dashboard" });
     this.assignLeaveButton = page.locator('button[title="Assign Leave"]');
 
     this.adminNavButton = page.getByText('Admin')
