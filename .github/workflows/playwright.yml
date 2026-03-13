@@ -17,6 +17,12 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Create .env file
+      run: |
+        echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+        echo "ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}" >> .env
+        echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env 
+        echo "ADMIN_INVALID_PASSWORD=${{ secrets.ADMIN_INVALID_PASSWORD }}" >> .env
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4

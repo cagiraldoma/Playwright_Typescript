@@ -1,13 +1,14 @@
 import { test } from '../fixures';
+import { AssignLeavePage } from '../pages/AssignLeavePage';
 
 test.describe('Create a leave request for an specific employee', async () => {
 
-    test('Create a leave request', async ({ loginToTheApp }) => {
-        const { basePage, dashboardPage } = loginToTheApp
+    test('Create a leave request from Dashboard Page', async ({ loginToTheApp }) => {
+        const { basePage, dashboardPage, assignLeavePage} = loginToTheApp
         await test.step('Admin creates a leave vacation request', async () => {
             await dashboardPage.click(dashboardPage.assignLeaveButton)
-            await dashboardPage.assignLeave('Orange Test', 'CAN - Personal', 'Full Day', 1,1)
-            await basePage.elementHasValue(dashboardPage.employeeNameInput, 'Orange  Test')
+            await assignLeavePage.assignLeave('Orange Test', 'CAN - Personal', 'Full Day', 1,1)
+            await basePage.elementHasValue(assignLeavePage.employeeNameInput, 'Orange  Test')
         })
     })
 

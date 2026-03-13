@@ -2,13 +2,16 @@ import { test as base } from '@playwright/test'
 import { BasePage } from "./pages/BasePage"
 import { LoginPage } from './pages/LoginPage'
 import { DashboardPage } from './pages/DashboardPage'
-import { userInfo } from 'os'
+import { AssignLeavePage } from './pages/AssignLeavePage'
+import { AdminPage } from './pages/AdminPage'
 
 type MyFixure = {
     loginToTheApp: {
         basePage: BasePage
         loginPage: LoginPage
         dashboardPage: DashboardPage
+        assignLeavePage: AssignLeavePage
+        adminPage: AdminPage
     },
 
     invalidLoginToTheApp: {
@@ -25,11 +28,13 @@ export const test = base.extend<MyFixure>({
         const basePage = new BasePage(page)
         const loginPage = new LoginPage(page)
         const dashboardPage = new DashboardPage(page)
+        const assignLeavePage = new AssignLeavePage(page)
+        const adminPage = new AdminPage(page)
         await basePage.navigateTo(process.env.BASE_URL!)
         await loginPage.login(process.env.ADMIN_USERNAME!, process.env.ADMIN_PASSWORD!)
 
 
-        await use({basePage,loginPage,dashboardPage})
+        await use({basePage,loginPage,dashboardPage,assignLeavePage,adminPage})
 
     },
 
