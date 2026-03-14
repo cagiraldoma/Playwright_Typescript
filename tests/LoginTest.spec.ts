@@ -11,5 +11,5 @@ test ('Login Success', async({ loginToTheApp })=>{
 test ('Validate Invalid Credentials Message', async({ invalidLoginToTheApp })=>{
     const { basePage, loginPage } = invalidLoginToTheApp
     console.log(await basePage.getTextContent(loginPage.invalidCredentialsMsg))
-    await basePage.elementHasTheText(loginPage.invalidCredentialsMsg, 'Invalid credentials')
+    await basePage.elementHasTheText(loginPage.invalidCredentialsMsg, 'Invalid credentials') 
 })
