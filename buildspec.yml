@@ -1,0 +1,41 @@
+version: 0.2
+
+env:
+  variables:
+    CI: "true"
+  parameter-store:
+    BASE_URL: "/playwright/BASE_URL"
+    ADMIN_USERNAME: "/playwright/ADMIN_USERNAME"
+    ADMIN_PASSWORD: "/playwright/ADMIN_PASSWORD"
+    ADMIN_INVALID_PASSWORD: "/playwright/ADMIN_INVALID_PASSWORD"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Instalando dependencias..."
+      - npm ci
+      - echo "Instalando Playwright browsers..."
+      - npx playwright install chromium --with-deps
+
+  pre_build:
+    commands:
+      - echo "Creando archivo .env..."
+      - echo "BASE_URL=$BASE_URL" >> .env
+      - echo "ADMIN_USERNAME=$ADMIN_USERNAME" >> .env
+      - echo "ADMIN_PASSWORD=$ADMIN_PASSWORD" >> .env
+      - echo "ADMIN_INVALID_PASSWORD=$ADMIN_INVALID_PASSWORD" >> .env
+
+  build:
+    commands:
+      - echo "Ejecutando tests de Playwright..."
+      - npx playwright test
+    finally:
+      - echo "Tests finalizados - estado $CODEBUILD_BUILD_SUCCEEDING"
+
+artifacts:
+  files:
+    - playwright-report/**/*
+  base-directory: .
+  name: playwright-report-$(date +%Y-%m-%d)
