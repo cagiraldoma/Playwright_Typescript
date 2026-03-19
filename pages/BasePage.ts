@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Page, Locator, expect } from '@playwright/test';
 
 export class BasePage {
   protected page: Page;
@@ -30,35 +30,32 @@ export class BasePage {
   }
 
   async waitForElementToBeVisible(locator: Locator, timeout?: number) {
-    await expect(locator).toBeVisible({ timeout })
+    await expect(locator).toBeVisible({ timeout });
   }
 
   async getTextContent(locator: Locator) {
-    return await locator.textContent()
+    return await locator.textContent();
   }
 
   async getAllTextContent(locator: Locator) {
     // await locator.waitFor()
-    return await locator.allTextContents()
+    return await locator.allTextContents();
   }
 
   async elementHasTheText(locator: Locator, text: string, auxiliarText?: string) {
-    await expect(locator, auxiliarText).toHaveText(text)
+    await expect(locator, auxiliarText).toHaveText(text);
   }
 
   async elementHasValue(locator: Locator, text: string) {
-    await expect(locator).toHaveValue(text)
+    await expect(locator).toHaveValue(text);
   }
 
   async selectFirstElement(locator: Locator) {
-    await locator.first().textContent()
+    await locator.first().textContent();
   }
 
   async selectElementByTextFromDropDown(dropdownLocator: Locator, elementText: string) {
-
     const elements = await dropdownLocator.elementHandles();
-    await dropdownLocator.filter({ hasText: elementText }).first().click()
-
+    await dropdownLocator.filter({ hasText: elementText }).first().click();
   }
-
 }

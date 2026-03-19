@@ -8,14 +8,12 @@ import path from 'path';
  */
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 export default defineConfig({
-  use: {
-
-  }
+  use: {},
 });
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config = ({
+const config = {
   testDir: './tests',
   timeout: 30 * 1000, // Aqui se puede editar el timeout para todo el proyecto
   expect: {
@@ -39,13 +37,12 @@ const config = ({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     browserName: 'chromium',
-    headless: true,
-
+    headless: false,
   },
 
-  // launchOptions: {
-  //   slowMo: 500
-  // },
+  launchOptions: {
+    slowMo: 50000,
+  },
 
   /* Configure projects for major browsers */
   projects: [
@@ -91,6 +88,6 @@ const config = ({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
-});
+};
 
-module.exports = config 
+module.exports = config;

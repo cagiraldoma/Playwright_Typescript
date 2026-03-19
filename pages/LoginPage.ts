@@ -1,5 +1,5 @@
-import { Page, Locator } from "@playwright/test";
-import { BasePage } from "./BasePage";
+import { Page, Locator } from '@playwright/test';
+import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
   readonly userNameInput: Locator;
@@ -14,14 +14,9 @@ export class LoginPage extends BasePage {
     this.userNameInput = page.locator('input[name="username"]');
     this.passwordInput = page.locator('input[name="password"]');
     this.loginButton = page.locator('button[type="submit"]');
-    this.forgotPasswordButton = page.locator(".orangehrm-login-forgot>p");
-    this.orangePageLink = page.locator(
-      '//div/p/a[contains(text(),"OrangeHRM, Inc")]'
-    );
-    this.invalidCredentialsMsg = page.locator(
-      'p[class="oxd-text oxd-text--p oxd-alert-content-text"]'
-    );
-    
+    this.forgotPasswordButton = page.locator('.orangehrm-login-forgot>p');
+    this.orangePageLink = page.locator('//div/p/a[contains(text(),"OrangeHRM, Inc")]');
+    this.invalidCredentialsMsg = page.locator('p[class="oxd-text oxd-text--p oxd-alert-content-text"]');
   }
 
   async login(username: string, password: string) {
