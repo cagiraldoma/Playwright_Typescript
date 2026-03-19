@@ -1,340 +1,280 @@
-# Playwright TypeScript - Proyecto de Testing E2E
+# Playwright TypeScript — E2E Testing Framework
 
-Este proyecto utiliza **Playwright** con **TypeScript** para realizar pruebas de testing end-to-end (E2E) automatizadas.
+End-to-end test automation framework for **OrangeHRM** using **Playwright + TypeScript** with the **Page Object Model (POM)** pattern and class inheritance.
 
-## 📋 Tabla de Contenidos
+**Application under test:** https://opensource-demo.orangehrmlive.com
 
-- [Requisitos Previos](#requisitos-previos)
-- [Instalación](#instalación)
-- [Configuración](#configuración)
-- [Estructura del Proyecto](#estructura-del-proyecto)
-- [Ejecutar Tests](#ejecutar-tests)
-- [Comandos Útiles](#comandos-útiles)
-- [Configuración del Proyecto](#configuración-del-proyecto)
-- [Ejemplos de Tests](#ejemplos-de-tests)
-- [Reportes](#reportes)
-- [Troubleshooting](#troubleshooting)
+---
 
-## 🛠️ Requisitos Previos
+## Prerequisites
 
-Antes de comenzar, asegúrate de tener instalado:
+- Node.js 16+
+- npm
+- Git
 
-- **Node.js** (versión 16 o superior)
-- **npm** o **yarn**
-- **Git**
+---
 
-### Verificar instalaciones:
+## Installation
 
 ```bash
-node --version
-npm --version
-git --version
-```
-
-## 🚀 Instalación
-
-1. **Clonar el repositorio:**
-   ```bash
-   git clone
-   cd Playwright_Typescript
-   ```
-
-2. **Instalar dependencias:**
-   ```bash
-   npm install
-   ```
-
-3. **Instalar navegadores de Playwright:**
-   ```bash
-   npx playwright install
-   ```
-
-## ⚙️ Configuración
-
-El proyecto ya viene configurado con `playwright.config.ts` que incluye:
-
-- **Timeout global:** 40 segundos
-- **Timeout para aserciones:** 5 segundos
-- **Navegador por defecto:** Chromium
-- **Modo headless:** Desactivado (los navegadores se abren visiblemente)
-- **Reportes:** HTML
-- **Tests paralelos:** Activados
-
-### Configuración actual:
-
-```typescript
-{
-  testDir: './tests',
-  timeout: 40 * 1000,
-  expect: {
-    timeout: 5 * 1000,
-  },
-  fullyParallel: true,
-  reporter: 'html',
-  use: {
-    trace: 'on-first-retry',
-    browserName: 'chromium',
-    headless: false,
-  }
-}
-```
-
-## 📁 Estructura del Proyecto
-
-```
-Playwright_Typescript/
-├── tests/                          # Tests principales
-│   └── UIBasicstest.spec.ts       # Tests básicos de UI
-├── tests-examples/                 # Ejemplos de tests
-│   └── demo-todo-app.spec.ts      # Demo completo de todo app
-├── playwright-report/              # Reportes HTML generados
-├── test-results/                   # Resultados de tests
-├── playwright.config.ts            # Configuración de Playwright
-├── package.json                    # Dependencias del proyecto
-└── README.md                       # Este archivo
-```
-
-## 🧪 Ejecutar Tests
-
-### Comandos básicos:
-
-```bash
-# Ejecutar todos los tests
-npx playwright test
-
-# Ejecutar tests en modo UI (interfaz gráfica)
-npx playwright test --ui
-
-# Ejecutar tests específicos
-npx playwright test tests/UIBasicstest.spec.ts
-
-# Ejecutar tests con navegador visible
-npx playwright test --headed
-
-# Ejecutar tests en modo debug
-npx playwright test --debug
-```
-
-### Ejecutar tests específicos:
-
-```bash
-# Por archivo
-npx playwright test UIBasicstest.spec.ts
-
-# Por nombre de test
-npx playwright test -g "First Test"
-
-# Por proyecto (navegador)
-npx playwright test --project=chromium
-```
-
-## 🔧 Comandos Útiles
-
-### Desarrollo y debugging:
-
-```bash
-# Abrir Playwright Inspector
-npx playwright test --debug
-
-# Generar código de test desde el inspector
-npx playwright codegen https://example.com
-
-# Instalar navegadores específicos
-npx playwright install chromium
-npx playwright install firefox
-npx playwright install webkit
-
-# Actualizar Playwright
+git clone <repo-url>
+cd Playwright_Typescript
+npm install
 npx playwright install
 ```
 
-### Reportes y análisis:
+---
 
-```bash
-# Ver reporte HTML
-npx playwright show-report
+## Environment Variables
 
-# Ver traces (si están habilitados)
-npx playwright show-trace trace.zip
+Create a `.env` file in the project root:
 
-# Ejecutar tests y generar reporte
-npx playwright test --reporter=html
+```env
+BASE_URL=https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
+ADMIN_USERNAME=Admin
+ADMIN_PASSWORD=admin123
+ADMIN_INVALID_PASSWORD=invalid123
 ```
 
-## ⚙️ Configuración del Proyecto
+---
 
-### Modificar timeouts:
+## Project Structure
 
-En `playwright.config.ts`:
+```
+Playwright_Typescript/
+├── .env                              # Environment variables (not committed)
+├── .github/workflows/
+│   └── playwright.yml               # GitHub Actions CI/CD pipeline
+├── buildspec.yml                    # AWS CodeBuild config
+├── playwright.config.ts             # Global Playwright configuration
+├── fixtures/
+│   └── testFixures.ts               # Custom fixtures (login setup)
+├── pages/
+│   ├── BasePage.ts                  # Base class with reusable UI methods
+│   ├── LoginPage.ts                 # Login page POM
+│   ├── DashboardPage.ts             # Dashboard page POM
+│   ├── AssignLeavePage.ts           # Leave assignment POM
+│   ├── AdminPage.ts                 # Admin module POM
+│   └── PimPage.ts                   # PIM (employee management) POM
+├── tests/
+│   ├── LoginTest.spec.ts            # Login tests (valid + invalid)
+│   ├── DashboardTest.spec.ts        # Dashboard / leave request tests
+│   ├── AdminTest.spec.ts            # Admin module tests
+│   └── PimPage.spec.ts              # PIM module tests
+└── utils/
+    ├── dateUtils.ts                 # Relative date helpers
+    └── randomValuesUtils.ts         # Random value generators
+```
+
+---
+
+## Architecture
+
+### Page Object Model with Inheritance
+
+```
+BasePage (base class — shared UI interaction methods)
+    ├── LoginPage        extends BasePage
+    ├── DashboardPage    extends BasePage
+    ├── AssignLeavePage  extends BasePage
+    ├── AdminPage        extends BasePage
+    └── PimPage          extends BasePage
+```
+
+### BasePage Methods
+
+| Method | Description |
+|--------|-------------|
+| `navigateTo(url)` | Navigate to a URL |
+| `click(locator)` | Click an element |
+| `fillInput(locator, value)` | Fill a text input |
+| `selectFromDropdown(locator, text)` | Click dropdown trigger, then select by role option |
+| `selectElementByTextFromDropDown(listLocator, text)` | Filter a visible list and click by text |
+| `selectFirstElement(locator)` | Click the first element in a list |
+| `verifyUrlContains(path)` | Assert current URL matches a pattern |
+| `elementIsVisible(locator)` | Assert element is visible |
+| `waitForElementToBeVisible(locator, timeout?)` | Wait for element to be visible |
+| `getTextContent(locator)` | Get text content of an element |
+| `getAllTextContent(locator)` | Get all text contents from a locator |
+| `elementHasTheText(locator, text)` | Assert element has exact text |
+| `elementHasValue(locator, text)` | Assert input has a value |
+
+---
+
+## Fixtures
+
+Located in `fixtures/testFixures.ts`. Extend Playwright's `base` and provide pre-configured page objects.
+
+| Fixture | Behavior |
+|---------|----------|
+| `loginToTheApp` | Navigates to `BASE_URL` and logs in with valid credentials. Returns `{ basePage, loginPage, dashboardPage, assignLeavePage, adminPage, pimPage }` |
+| `invalidLoginToTheApp` | Navigates to `BASE_URL` and logs in with invalid credentials. Returns `{ basePage, loginPage, dashboardPage }` |
+
+**Usage in tests — always import `test` from the fixtures, not from `@playwright/test`:**
 
 ```typescript
-const config = ({
-  timeout: 40 * 1000,        // Timeout global
-  expect: {
-    timeout: 5 * 1000,       // Timeout para aserciones
-  },
+import { test } from '../fixtures/testFixures';
+
+test('My test', async ({ loginToTheApp }) => {
+  const { dashboardPage, pimPage } = loginToTheApp;
   // ...
 });
 ```
 
-### Cambiar navegador:
+---
 
-```typescript
-use: {
-  browserName: 'firefox',    // o 'webkit', 'chromium'
-  headless: true,            // true para modo headless
-},
+## Playwright Configuration
+
+> **Note:** `playwright.config.ts` has two exports: `export default defineConfig({})` (empty) and `module.exports = config` (the real config). When modifying settings, always edit the `config` object.
+
+| Setting | Local | CI |
+|---------|-------|----|
+| Browser | Chromium | Chromium |
+| Headless | `true` | `true` |
+| Timeout | 30s | 30s |
+| Assert timeout | 5s | 5s |
+| Retries | 0 | 2 |
+| Workers | auto | 1 |
+| Parallel | yes | yes |
+| Trace | always | always |
+| Reporter | HTML | HTML |
+
+---
+
+## Running Tests
+
+```bash
+# Run all tests
+npx playwright test
+
+# Run a specific file
+npx playwright test tests/LoginTest.spec.ts
+
+# Run tests by name
+npx playwright test -g "Success Add Employee"
+
+# Run in UI mode (interactive)
+npx playwright test --ui
+
+# Run with visible browser
+npx playwright test --headed
+
+# Run in debug mode
+npx playwright test --debug
 ```
 
-### Agregar más navegadores:
+---
 
-Descomenta en `playwright.config.ts`:
+## Reports
 
-```typescript
-projects: [
-  {
-    name: 'chromium',
-    use: { ...devices['Desktop Chrome'] },
-  },
-  {
-    name: 'firefox',
-    use: { ...devices['Desktop Firefox'] },
-  },
-  {
-    name: 'webkit',
-    use: { ...devices['Desktop Safari'] },
-  },
-],
-```
-
-## 📝 Ejemplos de Tests
-
-### Test básico con fixture `page`:
-
-```typescript
-import { test, expect } from '@playwright/test';
-
-test('Mi primer test', async ({ page }) => {
-  await page.goto('https://example.com');
-  await expect(page).toHaveTitle('Example Domain');
-});
-```
-
-### Test con contexto manual:
-
-```typescript
-test('Test con contexto manual', async ({ browser }) => {
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  
-  await page.goto('https://example.com');
-  // ... tus tests
-  
-  await context.close();
-});
-```
-
-### Test con before/after hooks:
-
-```typescript
-test.describe('Suite de tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('https://example.com');
-  });
-
-  test('Test 1', async ({ page }) => {
-    // Tu test aquí
-  });
-
-  test('Test 2', async ({ page }) => {
-    // Otro test
-  });
-});
-```
-
-## 📊 Reportes
-
-### Reporte HTML:
-
-Después de ejecutar los tests, puedes ver el reporte HTML:
+After running tests, view the HTML report:
 
 ```bash
 npx playwright show-report
 ```
 
-El reporte incluye:
-- ✅ Tests exitosos
-- ❌ Tests fallidos
-- 📸 Screenshots automáticos
-- 🎬 Videos (si están habilitados)
-- 📝 Traces (si están habilitados)
+The report includes:
+- Pass / fail status per test
+- Step-by-step breakdown (via `test.step`)
+- Traces (enabled for all runs)
+- Screenshots on failure
+- Error context files in `test-results/`
 
-### Configurar reportes adicionales:
-
-En `playwright.config.ts`:
+To enable additional reporters in `playwright.config.ts`:
 
 ```typescript
 reporter: [
   ['html'],
   ['json', { outputFile: 'test-results/results.json' }],
-  ['junit', { outputFile: 'test-results/results.xml' }]
+  ['junit', { outputFile: 'test-results/results.xml' }],
 ],
 ```
 
-## 🔍 Troubleshooting
+---
 
-### Problemas comunes:
+## BDD-Style Tests with test.step
 
-1. **Error: "browser not found"**
-   ```bash
-   npx playwright install
-   ```
+Tests follow a Given / When / Then structure using `test.step()` — no Cucumber or extra dependencies needed.
 
-2. **Tests muy lentos**
-   - Revisa los timeouts en `playwright.config.ts`
-   - Considera usar `headless: true`
+```typescript
+test('Should add a new employee successfully', async ({ loginToTheApp }) => {
+  const { dashboardPage, pimPage, basePage } = loginToTheApp;
 
-3. **Tests fallan intermitentemente**
-   - Aumenta el timeout de aserciones
-   - Usa `waitFor` en lugar de `expect` inmediato
+  await test.step('Given the user is on the PIM module', async () => {
+    await dashboardPage.click(dashboardPage.pimNavButton);
+  });
 
-4. **Problemas con selectores**
-   - Usa `page.locator()` con selectores más específicos
-   - Considera usar `data-testid` en tu aplicación
+  await test.step('When the user submits the new employee form', async () => {
+    await pimPage.addNewEmployee('Carlos', 'Test', '12345678');
+  });
 
-### Debugging:
-
-```bash
-# Modo debug con pausa
-npx playwright test --debug
-
-# Ver logs detallados
-DEBUG=pw:api npx playwright test
-
-# Generar trace para análisis
-npx playwright test --trace on
+  await test.step('Then a success alert should be visible', async () => {
+    await basePage.elementIsVisible(pimPage.successAlert);
+  });
+});
 ```
-
-## 📚 Recursos Adicionales
-
-- [Documentación oficial de Playwright](https://playwright.dev/)
-- [Guía de TypeScript con Playwright](https://playwright.dev/docs/test-typescript)
-- [Selectores recomendados](https://playwright.dev/docs/locators)
-- [Mejores prácticas](https://playwright.dev/docs/best-practices)
-
-## 🤝 Contribuir
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia ISC. Ver el archivo `LICENSE` para más detalles.
 
 ---
 
-¡Listo para comenzar a escribir tests! 🚀
+## Utilities
 
+### `utils/dateUtils.ts`
+
+```typescript
+getDateDaysFromToday(days: number): string
+// Returns a date string in "YYYY-DD-MM" format
+// Note: day and month are inverted vs ISO standard — matches OrangeHRM input format
+```
+
+### `utils/randomValuesUtils.ts`
+
+```typescript
+getRandomInt(): string
+// Returns a random integer as a string (used for employee IDs, etc.)
+```
+
+---
+
+## CI/CD
+
+### GitHub Actions (`.github/workflows/playwright.yml`)
+
+- **Trigger:** push or PR to `main` / `master`
+- **Runner:** `ubuntu-latest`
+- **Steps:** checkout → Node LTS setup → `npm ci` → install browsers → `npx playwright test`
+- **Artifact:** uploads `playwright-report/` with 30-day retention
+
+### AWS CodeBuild (`buildspec.yml`)
+
+Separate pipeline for AWS environments.
+
+---
+
+## Known Issues
+
+- `playwright.config.ts` has a duplicate export structure. The `export default defineConfig({})` is empty — the real config lives in `module.exports = config`.
+- `utils/dateUtils.ts` returns dates in `YYYY-DD-MM` format (day and month inverted vs ISO `YYYY-MM-DD`). This matches the OrangeHRM date input — do not change without verifying the UI behavior first.
+
+---
+
+## Modules Covered
+
+| Module | Tests |
+|--------|-------|
+| Login | Valid login, invalid credentials |
+| Dashboard | Navigation |
+| Leave Management | Create leave request (`CAN - Personal`) |
+| Admin | Add system user, assign role |
+| PIM | Add new employee |
+
+**Test user:** `Admin` / `admin123`
+**Employee used in tests:** `Orange Test`
+
+---
+
+## Resources
+
+- [Playwright Docs](https://playwright.dev/)
+- [Playwright Locators](https://playwright.dev/docs/locators)
+- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+- [OrangeHRM Demo](https://opensource-demo.orangehrmlive.com)
