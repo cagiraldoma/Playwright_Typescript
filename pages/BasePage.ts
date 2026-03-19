@@ -58,4 +58,8 @@ export class BasePage {
     const elements = await dropdownLocator.elementHandles();
     await dropdownLocator.filter({ hasText: elementText }).first().click();
   }
+
+  async selectFromDropdown(dropdownLocator: Locator, optionText: string): Promise<void> {
+    await this.page.getByRole('option', { name: optionText, exact: true }).click();
+  }
 }
