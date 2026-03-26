@@ -1,3 +1,4 @@
+import { ur } from '@faker-js/faker';
 import { Page, Locator, expect } from '@playwright/test';
 
 export class BasePage {
@@ -12,12 +13,10 @@ export class BasePage {
   }
 
   async click(locator: Locator): Promise<void> {
-    // await locator.waitFor({ state: "visible" });
     await locator.click();
   }
 
   async fillInput(locator: Locator, value: string): Promise<void> {
-    // await locator.waitFor({ state: "visible" });
     await locator.fill(value);
   }
 
@@ -25,8 +24,16 @@ export class BasePage {
     await expect(this.page).toHaveURL(new RegExp(path));
   }
 
+  async verifyPageUrl(url: string) {
+    await expect(this.page).toHaveURL(url);
+  }
+
   async elementIsVisible(locator: Locator) {
     await expect(locator).toBeVisible();
+  }
+
+  async waitForElementToDisappear(locator: Locator) {
+    await locator.waitFor({ state: 'hidden' });
   }
 
   async waitForElementToBeVisible(locator: Locator, timeout?: number) {
@@ -38,7 +45,7 @@ export class BasePage {
   }
 
   async getAllTextContent(locator: Locator) {
-    // await locator.waitFor()
+    await locator.waitFor();
     return await locator.allTextContents();
   }
 
@@ -59,7 +66,11 @@ export class BasePage {
     await dropdownLocator.filter({ hasText: elementText }).first().click();
   }
 
-  async selectFromDropdown(dropdownLocator: Locator, optionText: string): Promise<void> {
+  async selectFromDropdown(optionText: string): Promise<void> {
     await this.page.getByRole('option', { name: optionText, exact: true }).click();
+  }
+
+  async pageHasTitle(titlePage: string) {
+    await expect(this.page).toHaveTitle(titlePage);
   }
 }

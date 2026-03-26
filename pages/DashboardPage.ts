@@ -1,6 +1,5 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { getDateDaysFromToday } from '../utils/dateUtils';
 
 export class DashboardPage extends BasePage {
   readonly adminTab: Locator;
