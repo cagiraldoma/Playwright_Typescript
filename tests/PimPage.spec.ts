@@ -2,7 +2,7 @@ import { test } from '../fixtures/testFixures';
 import { getRandomInt } from '../utils/randomValuesUtils';
 import { faker } from '@faker-js/faker';
 
-test.describe.only('PIM Module', () => {
+test.describe('PIM Module', () => {
   test.describe('Add employee flow', () => {
     test('Add and search employee', async ({ loginToTheApp }) => {
       const { dashboardPage, pimPage, basePage } = loginToTheApp;
