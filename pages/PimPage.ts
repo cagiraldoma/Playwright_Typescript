@@ -1,5 +1,6 @@
 import { Page, Locator, test } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { step } from '../utils/decorators';
 
 export class PimPage extends BasePage {
   //Add Employee Subpage
@@ -39,7 +40,7 @@ export class PimPage extends BasePage {
     this.loadingSpinner = page.locator('//div[@class="oxd-loading-spinner-container"]');
   }
 
-  async addNewEmployee(employeeFirtsName: string, employeeLastName: string, employeeId?: string, employeeMiddleName?: string) {
+  async addNewEmployee(employeeFirtsName: string, employeeLastName: string, employeeId?: string, _employeeMiddleName?: string) {
     await test.step(`Click add button ${this.addEmployeeButton}`, async () => {
       await this.click(this.addEmployeeButton);
     });
@@ -55,10 +56,19 @@ export class PimPage extends BasePage {
     });
   }
 
+  @step
   async searchEmployee(employeeName: string, employeeId: string) {
     await this.click(this.employeeListLink);
     await this.fillInput(this.employeeNameInput, employeeName);
     await this.fillInput(this.employeeId, employeeId);
     await this.click(this.searchButton);
+  }
+
+  async waitForSearchResults() {
+    await this.waitForElementToDisappear(this.loadingSpinner);
+  }
+
+  async getSearchResults() {
+    return await this.getAllTextContent(this.employeeListTable);
   }
 }

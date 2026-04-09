@@ -1,6 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { getDateDaysFromToday } from '../utils/dateUtils';
+import { step } from '../utils/decorators';
 
 export class AssignLeavePage extends BasePage {
   readonly employeeNameInput: Locator;
@@ -32,13 +33,14 @@ export class AssignLeavePage extends BasePage {
     this.commentsTextArea = page.locator('//div/textarea[@class="oxd-textarea oxd-textarea--active oxd-textarea--resize-vertical"]');
   }
 
+  @step
   async assignLeave(
     employeeName: string,
     leaveType: string,
     durationType: string,
     fromDateAfterToday: number,
     toDateAfterToday: number,
-    partialDaysType?: string,
+    _partialDaysType?: string,
   ) {
     await this.fillInput(this.employeeNameInput, employeeName);
     await this.selectElementByTextFromDropDown(this.employeeList, employeeName);
@@ -51,4 +53,5 @@ export class AssignLeavePage extends BasePage {
     await this.selectElementByTextFromDropDown(this.durationList, durationType);
     await this.click(this.commentsTextArea);
   }
+
 }

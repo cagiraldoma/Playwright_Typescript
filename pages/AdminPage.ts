@@ -1,6 +1,7 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { faker, th } from '@faker-js/faker';
+import { step } from '../utils/decorators';
 
 export class AdminPage extends BasePage {
   readonly addUserButton: Locator;
@@ -36,6 +37,11 @@ export class AdminPage extends BasePage {
     this.saveButton = page.getByRole('button', { name: 'Save' });
   }
 
+  async openAddUserForm() {
+    await this.click(this.addUserButton);
+  }
+
+  @step
   async addNewUser(userRole: string, employeeName: string, employeeStatus: string, employeeUserName: string, employeePassword: string) {
     await this.click(this.dropdownRoleButton);
     await this.selectElementByTextFromDropDown(this.dropdownRoleList, userRole);

@@ -1,4 +1,5 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
+export { expect };
 import { BasePage } from '../pages/BasePage';
 import { LoginPage } from '../pages/LoginPage';
 import { DashboardPage } from '../pages/DashboardPage';

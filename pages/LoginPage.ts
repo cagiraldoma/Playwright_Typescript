@@ -1,5 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { step } from '../utils/decorators';
 
 export class LoginPage extends BasePage {
   readonly userNameInput: Locator;
@@ -19,9 +20,11 @@ export class LoginPage extends BasePage {
     this.invalidCredentialsMsg = page.locator('p[class="oxd-text oxd-text--p oxd-alert-content-text"]');
   }
 
+  @step
   async login(username: string, password: string) {
     await this.fillInput(this.userNameInput, username);
     await this.fillInput(this.passwordInput, password);
     await this.click(this.loginButton);
   }
+
 }

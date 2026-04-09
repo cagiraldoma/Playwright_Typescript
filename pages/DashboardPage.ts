@@ -1,5 +1,6 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import { step } from '../utils/decorators';
 
 export class DashboardPage extends BasePage {
   readonly adminTab: Locator;
@@ -15,5 +16,17 @@ export class DashboardPage extends BasePage {
     this.assignLeaveButton = page.locator('button[title="Assign Leave"]');
     this.adminNavButton = page.getByRole('link', { name: 'Admin' });
     this.pimNavButton = page.getByRole('link', { name: 'PIM' });
+  }
+
+  async navigateToAdmin() {
+    await this.click(this.adminNavButton);
+  }
+
+  async navigateToPim() {
+    await this.click(this.pimNavButton);
+  }
+
+  async openAssignLeave() {
+    await this.click(this.assignLeaveButton);
   }
 }

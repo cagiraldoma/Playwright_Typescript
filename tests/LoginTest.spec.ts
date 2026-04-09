@@ -1,18 +1,16 @@
-import { test } from '../fixtures/testFixures';
+import { test, expect } from '../fixtures/testFixures';
+import { step } from '../utils/decorators';
 
 test('Login Success', async ({ loginToTheApp }) => {
-  const { basePage, loginPage, dashboardPage } = loginToTheApp;
-  await loginPage.verifyPageUrl('https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index');
-  await basePage.elementIsVisible(dashboardPage.dashboardHeader);
-  await basePage.getTextContent(dashboardPage.dashboardHeader);
-  await loginPage.verifyUrlContains('dashboard/index');
+  const { dashboardPage } = loginToTheApp;
+  await expect(dashboardPage.dashboardHeader).toBeVisible();
+  await dashboardPage.verifyUrlContains('dashboard/index');
   await dashboardPage.pageHasTitle('OrangeHRM');
 });
 
 test('Validate Invalid Credentials Message', async ({ invalidLoginToTheApp }) => {
-  const { basePage, loginPage } = invalidLoginToTheApp;
-  await basePage.getTextContent(loginPage.invalidCredentialsMsg);
-  await basePage.elementHasTheText(loginPage.invalidCredentialsMsg, 'Invalid credentials');
+  const { loginPage } = invalidLoginToTheApp;
+  await expect(loginPage.invalidCredentialsMsg).toHaveText('Invalid credentials');
   await loginPage.verifyPageUrl('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login');
   await loginPage.pageHasTitle('OrangeHRM');
 });
