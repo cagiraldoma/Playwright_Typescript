@@ -70,7 +70,7 @@ export class BasePage {
     await this.page.getByRole('option', { name: optionText, exact: true }).click();
   }
 
-  async pageHasTitle(titlePage: string) {
-    await expect(this.page).toHaveTitle(titlePage);
+  async pageHasTitle(titlePage: string, auxiliarText?: string) {
+    await expect(this.page, auxiliarText).toHaveTitle(titlePage);
   }
 }

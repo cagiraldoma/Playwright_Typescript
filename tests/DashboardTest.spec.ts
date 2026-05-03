@@ -5,6 +5,6 @@ test.describe('Create a leave request for an specific employee', async () => {
     const { dashboardPage, assignLeavePage } = loginToTheApp;
     await dashboardPage.openAssignLeave();
     await assignLeavePage.assignLeave('Orange  Test', 'CAN - Personal', 'Full Day', 1, 1);
-    await expect(assignLeavePage.employeeNameInput).toHaveValue('Orange  Test');
+    await expect(assignLeavePage.employeeNameInput, 'Employee name input does not have the expected value').toHaveValue('Orange  Test');
   });
 });

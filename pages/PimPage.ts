@@ -1,4 +1,4 @@
-import { Page, Locator, test } from '@playwright/test';
+import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { step } from '../utils/decorators';
 
@@ -40,20 +40,15 @@ export class PimPage extends BasePage {
     this.loadingSpinner = page.locator('//div[@class="oxd-loading-spinner-container"]');
   }
 
+  @step
   async addNewEmployee(employeeFirtsName: string, employeeLastName: string, employeeId?: string, _employeeMiddleName?: string) {
-    await test.step(`Click add button ${this.addEmployeeButton}`, async () => {
-      await this.click(this.addEmployeeButton);
-    });
-    await test.step('Fill Add new EE form', async () => {
-      await this.fillInput(this.firstNameInput, employeeFirtsName);
-      await this.fillInput(this.lastNameInput, employeeLastName);
-      if (employeeId) {
-        await this.fillInput(this.employeeIdInput, employeeId);
-      }
-    });
-    await test.step(`Click on Save Button ${this.saveButton}`, async () => {
-      await this.click(this.saveButton);
-    });
+    await this.click(this.addEmployeeButton);
+    await this.fillInput(this.firstNameInput, employeeFirtsName);
+    await this.fillInput(this.lastNameInput, employeeLastName);
+    if (employeeId) {
+      await this.fillInput(this.employeeIdInput, employeeId);
+    }
+    await this.click(this.saveButton);
   }
 
   @step

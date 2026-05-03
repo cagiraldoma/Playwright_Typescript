@@ -18,14 +18,17 @@ export class DashboardPage extends BasePage {
     this.pimNavButton = page.getByRole('link', { name: 'PIM' });
   }
 
+  @step
   async navigateToAdmin() {
     await this.click(this.adminNavButton);
   }
 
+  @step
   async navigateToPim() {
     await this.click(this.pimNavButton);
   }
 
+  @step
   async openAssignLeave() {
     await this.click(this.assignLeaveButton);
   }

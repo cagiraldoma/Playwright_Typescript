@@ -14,7 +14,7 @@ test.describe('PIM Module', () => {
 
       await dashboardPage.navigateToPim();
       await pimPage.addNewEmployee(firstName, lastName, employeeId);
-      await expect(pimPage.successAlert).toBeVisible();
+      await expect(pimPage.successAlert, 'Success alert not shown after saving employee').toBeVisible();
       await pimPage.searchEmployee(employeeName, employeeId);
       await pimPage.waitForSearchResults();
       console.log(await pimPage.getSearchResults());

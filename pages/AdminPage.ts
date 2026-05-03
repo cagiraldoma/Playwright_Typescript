@@ -1,6 +1,5 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
-import { faker, th } from '@faker-js/faker';
 import { step } from '../utils/decorators';
 
 export class AdminPage extends BasePage {
@@ -37,6 +36,7 @@ export class AdminPage extends BasePage {
     this.saveButton = page.getByRole('button', { name: 'Save' });
   }
 
+  @step
   async openAddUserForm() {
     await this.click(this.addUserButton);
   }
