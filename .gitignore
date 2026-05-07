@@ -6,3 +6,61 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 .env
+
+# Dependencies
+node_modules/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# Playwright outputs
+test-results/
+playwright-report/
+blob-report/
+allure-results/
+allure-report/
+trace.zip
+*.trace
+.playwright/
+.playwright-mcp/
+.local-browsers/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# MCP / AI tool local state
+.mcp-cache/
+.mcp-logs/
+.mcp-tmp/
+.mcp*.log
+.mcp.remote*.json
+.mcp.local.json
+
+
+# IDE local MCP configs with credentials
+.vscode/mcp.json
+.cursor/mcp.json
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+
+# Logs / temp
+*.log
+tmp/
+.cache/
+
+# Generated screenshots / diagrams
+generated/
+screenshots/
+artifacts/
+reports/
+*.png

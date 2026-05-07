@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect, Page } from '@playwright/test';
 export { expect };
 import { BasePage } from '../pages/BasePage';
 import { LoginPage } from '../pages/LoginPage';
@@ -8,6 +8,11 @@ import { AdminPage } from '../pages/AdminPage';
 import { PimPage } from '../pages/PimPage';
 
 type MyFixure = {
+  navigateToApp: {
+    page: Page;
+    loginPage: LoginPage;
+  };
+
   loginToTheApp: {
     basePage: BasePage;
     loginPage: LoginPage;
@@ -25,6 +30,12 @@ type MyFixure = {
 };
 
 export const test = base.extend<MyFixure>({
+  navigateToApp: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+    await page.goto(process.env.BASE_URL!);
+    await use({ page, loginPage });
+  },
+
   loginToTheApp: async ({ page }, use) => {
     const basePage = new BasePage(page);
     const loginPage = new LoginPage(page);
