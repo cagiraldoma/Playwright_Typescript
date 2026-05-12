@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/testFixures';
+import { test, expect } from '../fixtures/testFixtures';
 
 test.describe('Create a leave request for an specific employee', async () => {
   test('Create a leave request from Dashboard Page', async ({ loginToTheApp }) => {

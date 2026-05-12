@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/testFixures';
+import { test, expect } from '../fixtures/testFixtures';
 import { faker } from '@faker-js/faker';
 
 test('Create new user', async ({ loginToTheApp }) => {

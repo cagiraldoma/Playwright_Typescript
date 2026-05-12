@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/testFixures';
+import { test, expect } from '../fixtures/testFixtures';
 import { getRandomInt } from '../utils/randomValuesUtils';
 import { faker } from '@faker-js/faker';
 

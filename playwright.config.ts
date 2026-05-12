@@ -8,9 +8,6 @@ import path from 'path';
  * https://github.com/motdotla/dotenv
  */
 dotenv.config({ path: path.resolve(__dirname, '.env') });
-export default defineConfig({
-  use: {},
-});
 
 /**
  * See https://playwright.dev/docs/test-configuration.

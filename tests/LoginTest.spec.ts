@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/testFixures';
+import { test, expect } from '../fixtures/testFixtures';
 
 test('Login Success', async ({ loginToTheApp }) => {
   const { dashboardPage } = loginToTheApp;
